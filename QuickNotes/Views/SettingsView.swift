@@ -31,7 +31,7 @@ struct SettingsView: View {
             Spacer(minLength: 0)
         }
         .padding(24)
-        .frame(width: 460, minHeight: 300, alignment: .topLeading)
+        .frame(minWidth: 460, maxWidth: 460, minHeight: 300, alignment: .topLeading)
         .navigationTitle("Wingit Settings")
     }
 
