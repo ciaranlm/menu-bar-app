@@ -15,8 +15,6 @@
 		A00000000000000000000021 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000020 /* SettingsView.swift */; };
 		A00000000000000000000024 /* HotkeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000029 /* HotkeyManager.swift */; };
 		A00000000000000000000025 /* StatusItemController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000002A /* StatusItemController.swift */; };
-		A00000000000000000000026 /* KeyboardShortcuts+Names.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000002B /* KeyboardShortcuts+Names.swift */; };
-		A00000000000000000000027 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = A00000000000000000000028 /* KeyboardShortcuts */; };
 		A00000000000000000000003 /* Wingit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Wingit.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A00000000000000000000022 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A00000000000000000000023 /* QuickNotes.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = QuickNotes.entitlements; sourceTree = "<group>"; };
@@ -30,8 +28,7 @@
 		A00000000000000000000020 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		A00000000000000000000029 /* HotkeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeyManager.swift; sourceTree = "<group>"; };
 		A0000000000000000000002A /* StatusItemController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusItemController.swift; sourceTree = "<group>"; };
-		A0000000000000000000002B /* KeyboardShortcuts+Names.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeyboardShortcuts+Names.swift"; sourceTree = "<group>"; };
-		A00000000000000000000006 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = ( A00000000000000000000027 /* KeyboardShortcuts in Frameworks */ ); runOnlyForDeploymentPostprocessing = 0; };
+		A00000000000000000000006 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = ( ); runOnlyForDeploymentPostprocessing = 0; };
 		A00000000000000000000001 = {isa = PBXGroup; children = (
 				A0000000000000000000000E,
 				A00000000000000000000002
@@ -57,7 +54,6 @@
 			); path = Services; sourceTree = "<group>"; };
 		A00000000000000000000010 /* Helpers */ = {isa = PBXGroup; children = (
 				A0000000000000000000001C /* LaunchAtLoginManager.swift */,
-				A0000000000000000000002B /* KeyboardShortcuts+Names.swift */,
 			); path = Helpers; sourceTree = "<group>"; };
 		A00000000000000000000011 /* Views */ = {isa = PBXGroup; children = (
 				A0000000000000000000001E /* QuickNotesMenuBarView.swift */,
@@ -76,9 +72,6 @@
 			name = "Wingit";
 			productName = "Wingit";
 			productReference = A00000000000000000000003 /* Wingit.app */;
-			packageProductDependencies = (
-				A00000000000000000000028 /* KeyboardShortcuts */,
-			);
 			productType = "com.apple.product-type.application";
 		};
 		A00000000000000000000000 /* Project object */ = {
@@ -99,17 +92,12 @@
 			hasScannedForEncodings = 0;
 			knownRegions = ( en, Base );
 			mainGroup = A00000000000000000000001;
-			packageReferences = (
-				A0000000000000000000002C /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
-			);
 			productRefGroup = A00000000000000000000002 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = ( A00000000000000000000004 /* Wingit */ );
 		};
 		A00000000000000000000007 /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = ( ); runOnlyForDeploymentPostprocessing = 0; };
-		A0000000000000000000002C /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */ = {isa = XCRemoteSwiftPackageReference; repositoryURL = "https://github.com/sindresorhus/KeyboardShortcuts"; requirement = {kind = upToNextMajorVersion; minimumVersion = 2.4.0; }; };
-		A00000000000000000000028 /* KeyboardShortcuts */ = {isa = XCSwiftPackageProductDependency; package = A0000000000000000000002C /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */; productName = KeyboardShortcuts; };
 		A00000000000000000000005 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (
 				A00000000000000000000013 /* in Sources */,
 				A00000000000000000000015 /* in Sources */,
@@ -121,7 +109,6 @@
 				A00000000000000000000021 /* in Sources */,
 				A00000000000000000000024 /* in Sources */,
 				A00000000000000000000025 /* in Sources */,
-				A00000000000000000000026 /* in Sources */,
 			); runOnlyForDeploymentPostprocessing = 0; };
 		A0000000000000000000000A /* Debug */ = {isa = XCBuildConfiguration; buildSettings = { ALWAYS_SEARCH_USER_PATHS = NO; CLANG_ANALYZER_NONNULL = YES; CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE; CLANG_CXX_LANGUAGE_STANDARD = "gnu++20"; CLANG_ENABLE_MODULES = YES; CLANG_ENABLE_OBJC_ARC = YES; CLANG_ENABLE_OBJC_WEAK = YES; CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES; CLANG_WARN_BOOL_CONVERSION = YES; CLANG_WARN_COMMA = YES; CLANG_WARN_CONSTANT_CONVERSION = YES; CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES; CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR; CLANG_WARN_DOCUMENTATION_COMMENTS = YES; CLANG_WARN_EMPTY_BODY = YES; CLANG_WARN_ENUM_CONVERSION = YES; CLANG_WARN_INFINITE_RECURSION = YES; CLANG_WARN_INT_CONVERSION = YES; CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES; CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES; CLANG_WARN_OBJC_LITERAL_CONVERSION = YES; CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR; CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES; CLANG_WARN_RANGE_LOOP_ANALYSIS = YES; CLANG_WARN_STRICT_PROTOTYPES = YES; CLANG_WARN_SUSPICIOUS_MOVE = YES; CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE; CLANG_WARN_UNREACHABLE_CODE = YES; CLANG_WARN__DUPLICATE_METHOD_MATCH = YES; COPY_PHASE_STRIP = NO; ENABLE_STRICT_OBJC_MSGSEND = YES; ENABLE_TESTABILITY = YES; GCC_C_LANGUAGE_STANDARD = gnu17; GCC_NO_COMMON_BLOCKS = YES; GCC_WARN_64_TO_32_BIT_CONVERSION = YES; GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR; GCC_WARN_UNDECLARED_SELECTOR = YES; GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE; GCC_WARN_UNUSED_FUNCTION = YES; GCC_WARN_UNUSED_VARIABLE = YES; MACOSX_DEPLOYMENT_TARGET = 14.0; SDKROOT = macosx; SWIFT_VERSION = 5.0; DEBUG_INFORMATION_FORMAT = dwarf; GCC_OPTIMIZATION_LEVEL = 0; SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG; SWIFT_OPTIMIZATION_LEVEL = "-Onone"; }; name = Debug; };
 		A0000000000000000000000B /* Release */ = {isa = XCBuildConfiguration; buildSettings = { ALWAYS_SEARCH_USER_PATHS = NO; CLANG_ANALYZER_NONNULL = YES; CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE; CLANG_CXX_LANGUAGE_STANDARD = "gnu++20"; CLANG_ENABLE_MODULES = YES; CLANG_ENABLE_OBJC_ARC = YES; CLANG_ENABLE_OBJC_WEAK = YES; CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES; CLANG_WARN_BOOL_CONVERSION = YES; CLANG_WARN_COMMA = YES; CLANG_WARN_CONSTANT_CONVERSION = YES; CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES; CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR; CLANG_WARN_DOCUMENTATION_COMMENTS = YES; CLANG_WARN_EMPTY_BODY = YES; CLANG_WARN_ENUM_CONVERSION = YES; CLANG_WARN_INFINITE_RECURSION = YES; CLANG_WARN_INT_CONVERSION = YES; CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES; CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES; CLANG_WARN_OBJC_LITERAL_CONVERSION = YES; CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR; CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES; CLANG_WARN_RANGE_LOOP_ANALYSIS = YES; CLANG_WARN_STRICT_PROTOTYPES = YES; CLANG_WARN_SUSPICIOUS_MOVE = YES; CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE; CLANG_WARN_UNREACHABLE_CODE = YES; CLANG_WARN__DUPLICATE_METHOD_MATCH = YES; COPY_PHASE_STRIP = NO; ENABLE_STRICT_OBJC_MSGSEND = YES; ENABLE_TESTABILITY = YES; GCC_C_LANGUAGE_STANDARD = gnu17; GCC_NO_COMMON_BLOCKS = YES; GCC_WARN_64_TO_32_BIT_CONVERSION = YES; GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR; GCC_WARN_UNDECLARED_SELECTOR = YES; GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE; GCC_WARN_UNUSED_FUNCTION = YES; GCC_WARN_UNUSED_VARIABLE = YES; MACOSX_DEPLOYMENT_TARGET = 14.0; SDKROOT = macosx; SWIFT_VERSION = 5.0; DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym"; ENABLE_TESTABILITY = NO; SWIFT_COMPILATION_MODE = wholemodule; SWIFT_OPTIMIZATION_LEVEL = "-O"; }; name = Release; };
