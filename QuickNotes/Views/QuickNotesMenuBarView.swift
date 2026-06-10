@@ -21,13 +21,15 @@ struct QuickNotesMenuBarView: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 14) {
+        VStack(alignment: .leading, spacing: 16) {
             header
             editor
             controls
             statusMessage
         }
-        .padding(16)
+        .padding(.horizontal, 18)
+        .padding(.top, 18)
+        .padding(.bottom, 16)
         .frame(width: 360)
         .opacity(isContentVisible ? 1 : 0)
         .scaleEffect(isContentVisible ? 1 : 0.97, anchor: .top)
@@ -46,29 +48,41 @@ struct QuickNotesMenuBarView: View {
     }
 
     private var header: some View {
-        HStack(spacing: 8) {
+        HStack(spacing: 10) {
             Image(systemName: "bird.fill")
-                .font(.title3)
+                .font(.system(size: 22, weight: .semibold))
                 .foregroundStyle(Color.accentColor)
+                .frame(width: 28, height: 28)
 
             Text("Wingit")
-                .font(.headline)
+                .font(.system(size: 17, weight: .semibold))
+                .foregroundStyle(.primary)
 
             Spacer()
 
-            Button {
-                openSettings()
-            } label: {
-                Image(systemName: "gearshape")
-                    .imageScale(.medium)
-            }
-            .buttonStyle(.borderless)
-            .help("Open Settings")
+            HStack(spacing: 8) {
+                Button {
+                    openSettings()
+                } label: {
+                    Image(systemName: "gearshape")
+                        .font(.system(size: 15, weight: .medium))
+                        .frame(width: 26, height: 26)
+                }
+                .buttonStyle(.plain)
+                .foregroundStyle(.secondary)
+                .contentShape(Rectangle())
+                .help("Open Settings")
 
-            Button("Quit") {
-                NSApplication.shared.terminate(nil)
+                Button("Quit") {
+                    NSApplication.shared.terminate(nil)
+                }
+                .buttonStyle(.plain)
+                .font(.system(size: 13, weight: .semibold))
+                .foregroundStyle(.secondary)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 5)
+                .background(.quaternary.opacity(0.35), in: Capsule())
             }
-            .buttonStyle(.borderless)
         }
     }
 
@@ -79,27 +93,41 @@ struct QuickNotesMenuBarView: View {
             onSave: { Task { await saveNote() } },
             onCancel: closePopover
         )
-        .frame(height: 120)
-        .background(.quaternary, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
-        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+        .frame(height: 122)
+        .background(editorBackground)
+        .clipShape(editorShape)
+        .overlay(editorShape.strokeBorder(Color(nsColor: .separatorColor).opacity(0.35), lineWidth: 1))
         .overlay(alignment: .topLeading) {
             if text.isEmpty {
                 Text("Type a note…")
+                    .font(.body)
                     .foregroundStyle(.secondary)
-                    .padding(.horizontal, 14)
-                    .padding(.vertical, 13)
+                    .padding(.horizontal, Self.editorHorizontalInset)
+                    .padding(.vertical, Self.editorVerticalInset)
                     .allowsHitTesting(false)
             }
         }
     }
 
+    private var editorBackground: some View {
+        editorShape
+            .fill(Color(nsColor: .textBackgroundColor).opacity(0.72))
+            .shadow(color: .black.opacity(0.04), radius: 8, x: 0, y: 2)
+    }
+
+    private var editorShape: RoundedRectangle {
+        RoundedRectangle(cornerRadius: 12, style: .continuous)
+    }
+
     private var controls: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading, spacing: 12) {
             Toggle("Append to today’s daily note", isOn: $appState.appendToDailyNote)
                 .toggleStyle(.checkbox)
+                .font(.callout)
 
-            HStack {
-                Text("⌘↩ Save · Esc Close")
+            HStack(alignment: .center, spacing: 12) {
+                Label("⌘↩ Save · Esc Close", systemImage: "keyboard")
+                    .labelStyle(.titleAndIcon)
                     .font(.caption)
                     .foregroundStyle(.secondary)
 
@@ -111,13 +139,16 @@ struct QuickNotesMenuBarView: View {
                     if isSaving {
                         ProgressView()
                             .controlSize(.small)
+                            .frame(width: 84)
                     } else {
                         Text("Save to Notes")
+                            .frame(minWidth: 84)
                     }
                 }
                 .keyboardShortcut(.return, modifiers: [.command])
                 .disabled(isSaving || trimmedText.isEmpty)
                 .buttonStyle(.borderedProminent)
+                .controlSize(.large)
             }
         }
     }
@@ -136,6 +167,9 @@ struct QuickNotesMenuBarView: View {
                 .fixedSize(horizontal: false, vertical: true)
         }
     }
+
+    fileprivate static let editorHorizontalInset: CGFloat = 16
+    fileprivate static let editorVerticalInset: CGFloat = 14
 
     private var trimmedText: String {
         text.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -217,7 +251,10 @@ private struct NoteEditor: NSViewRepresentable {
         textView.allowsUndo = true
         textView.font = .preferredFont(forTextStyle: .body)
         textView.insertionPointColor = NSColor.controlAccentColor
-        textView.textContainerInset = NSSize(width: 6, height: 9)
+        textView.textContainerInset = NSSize(
+            width: QuickNotesMenuBarView.editorHorizontalInset,
+            height: QuickNotesMenuBarView.editorVerticalInset
+        )
         textView.textContainer?.lineFragmentPadding = 0
         textView.string = text
         textView.onSave = onSave
@@ -225,7 +262,8 @@ private struct NoteEditor: NSViewRepresentable {
 
         let scrollView = NSScrollView()
         scrollView.drawsBackground = false
-        scrollView.hasVerticalScroller = true
+        scrollView.hasVerticalScroller = false
+        scrollView.autohidesScrollers = true
         scrollView.borderType = .noBorder
         scrollView.documentView = textView
         scrollView.contentView.postsBoundsChangedNotifications = true
@@ -250,6 +288,10 @@ private struct NoteEditor: NSViewRepresentable {
 
         textView.font = .preferredFont(forTextStyle: .body)
         textView.insertionPointColor = NSColor.controlAccentColor
+        textView.textContainerInset = NSSize(
+            width: QuickNotesMenuBarView.editorHorizontalInset,
+            height: QuickNotesMenuBarView.editorVerticalInset
+        )
         textView.onSave = onSave
         textView.onCancel = onCancel
 
