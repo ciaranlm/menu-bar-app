@@ -54,7 +54,7 @@ struct QuickNotesMenuBarView: View {
 
     private var editor: some View {
         NoteEditor(text: $text, isFocused: $isEditorFocused)
-            .frame(height: 180)
+            .frame(height: 120)
             .background(.quaternary, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
             .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
             .overlay(alignment: .topLeading) {
