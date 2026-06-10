@@ -1,3 +1,4 @@
+import Combine
 import Foundation
 
 @MainActor
@@ -7,6 +8,7 @@ final class AppState: ObservableObject {
     }
 
     @Published var launchAtLoginEnabled: Bool = LaunchAtLoginManager.isEnabled
+    @Published private(set) var quickCaptureRequestID = UUID()
 
     let notesService: NotesServicing
 
@@ -15,6 +17,10 @@ final class AppState: ObservableObject {
     init(notesService: NotesServicing = NotesService()) {
         self.notesService = notesService
         appendToDailyNote = UserDefaults.standard.object(forKey: Self.appendToDailyNoteKey) as? Bool ?? false
+    }
+
+    func startFreshCapture() {
+        quickCaptureRequestID = UUID()
     }
 
     func setLaunchAtLogin(_ enabled: Bool) {
