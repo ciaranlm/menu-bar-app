@@ -6,6 +6,7 @@ final class StatusItemController: NSObject, NSPopoverDelegate {
     private let appState: AppState
     private let statusItem: NSStatusItem
     private let popover = NSPopover()
+    private var settingsWindowController: NSWindowController?
 
     init(appState: AppState) {
         self.appState = appState
@@ -53,11 +54,45 @@ final class StatusItemController: NSObject, NSPopoverDelegate {
         popover.delegate = self
         popover.contentSize = NSSize(width: 360, height: 280)
         popover.contentViewController = NSHostingController(
-            rootView: QuickNotesMenuBarView(closePopover: { [weak self] in
-                self?.closePopover()
-            })
+            rootView: QuickNotesMenuBarView(
+                closePopover: { [weak self] in
+                    self?.closePopover()
+                },
+                openSettings: { [weak self] in
+                    self?.openSettings()
+                }
+            )
             .environmentObject(appState)
         )
+    }
+
+    private func openSettings() {
+        closePopover()
+
+        let windowController: NSWindowController
+        if let existingWindowController = settingsWindowController {
+            windowController = existingWindowController
+        } else {
+            windowController = makeSettingsWindowController()
+            settingsWindowController = windowController
+        }
+
+        NSApp.activate(ignoringOtherApps: true)
+        windowController.showWindow(nil)
+        windowController.window?.makeKeyAndOrderFront(nil)
+    }
+
+    private func makeSettingsWindowController() -> NSWindowController {
+        let settingsView = SettingsView()
+            .environmentObject(appState)
+        let hostingController = NSHostingController(rootView: settingsView)
+        let window = NSWindow(contentViewController: hostingController)
+        window.title = "Wingit Settings"
+        window.styleMask = [.titled, .closable, .miniaturizable]
+        window.isReleasedWhenClosed = false
+        window.center()
+
+        return NSWindowController(window: window)
     }
 
     @objc private func statusItemClicked() {
