@@ -34,10 +34,4 @@ The app includes the `NSAppleEventsUsageDescription` purpose string and the Appl
 4. For the Mac App Store, keep App Sandbox enabled and verify Apple Events usage against App Store Review requirements.
 5. Ship the notarized `.app` in a signed `.dmg` or `.pkg` installer.
 
-## v2 ideas
 
-- Global hotkey support to open the popover from anywhere.
-- Folder picker for choosing the destination Notes folder/account.
-- Markdown-to-rich-text conversion before creating Notes content.
-- Searchable save history and retry queue for failed saves.
-- iCloud sync status warnings when Notes is unavailable or offline.
