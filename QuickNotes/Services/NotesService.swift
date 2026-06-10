@@ -22,7 +22,7 @@ enum NotesServiceError: LocalizedError, Equatable {
         case .automationPermissionDenied:
             return "Quick Notes needs permission to control Apple Notes. Open System Settings → Privacy & Security → Automation and allow Notes access."
         case .notesUnavailable:
-            return "Apple Notes could not be opened. Make sure Notes is installed and try again."
+            return "Apple Notes could not be opened. Make sure Notes is installed and try again. If this keeps happening, allow Quick Notes to control Notes in System Settings → Privacy & Security → Automation."
         case let .appleScriptFailed(message, _):
             return message.isEmpty ? "Apple Notes could not create the note." : message
         }
@@ -30,6 +30,8 @@ enum NotesServiceError: LocalizedError, Equatable {
 }
 
 final class NotesService: NotesServicing {
+    private static let notesApplicationReference = #"application id "com.apple.Notes""#
+
     func save(_ text: String, appendToDailyNote: Bool) async throws -> SavedNoteResult {
         let trimmedText = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmedText.isEmpty else { throw NotesServiceError.emptyText }
@@ -92,7 +94,10 @@ final class NotesService: NotesServicing {
         -- Notes stores note bodies as HTML. The Swift layer escapes user text and converts
         -- line breaks to <br> tags before injecting it into these AppleScript literals.
         -- The first launch triggers macOS Automation consent for controlling Notes.
-        tell application "Notes"
+        -- Use Notes' bundle identifier instead of its localized app name so Launch Services
+        -- can resolve the app reliably across languages and macOS versions.
+        tell \(notesApplicationReference)
+            launch
             make new note with properties {name:\(titleLiteral), body:\(bodyLiteral)}
         end tell
         """
@@ -107,7 +112,10 @@ final class NotesService: NotesServicing {
         -- If it exists, append a separator and the new escaped HTML body. Notes exposes
         -- existing note content as HTML through AppleScript, so appending HTML preserves
         -- the multiline formatting generated in Swift.
-        tell application "Notes"
+        -- Use Notes' bundle identifier instead of its localized app name so Launch Services
+        -- can resolve the app reliably across languages and macOS versions.
+        tell \(notesApplicationReference)
+            launch
             set dailyTitle to \(titleLiteral)
             set newBody to \(bodyLiteral)
             set matchingNotes to every note whose name is dailyTitle
