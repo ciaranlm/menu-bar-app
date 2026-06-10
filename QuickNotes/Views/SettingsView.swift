@@ -1,4 +1,3 @@
-import KeyboardShortcuts
 import SwiftUI
 
 struct SettingsView: View {
@@ -21,10 +20,8 @@ struct SettingsView: View {
             }
 
             Section("Keyboard Shortcuts") {
-                KeyboardShortcuts.Recorder("Open Quick Notes:", name: .quickCapture)
-
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("Default: Control-Shift-Space")
+                    Text("Open Quick Notes: Control-Shift-Space")
                     Text("Command-Return saves while the popover is open. Escape closes it without saving.")
                 }
                 .font(.caption)
