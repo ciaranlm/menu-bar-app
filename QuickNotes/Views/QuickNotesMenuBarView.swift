@@ -29,7 +29,7 @@ struct QuickNotesMenuBarView: View {
         HStack(spacing: 8) {
             Image(systemName: "note.text")
                 .font(.title3)
-                .foregroundStyle(.accent)
+                .foregroundStyle(Color.accentColor)
 
             Text("Quick Notes")
                 .font(.headline)
