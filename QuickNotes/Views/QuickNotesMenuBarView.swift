@@ -10,6 +10,7 @@ struct QuickNotesMenuBarView: View {
     @State private var text = ""
     @State private var isEditorFocused = false
     @State private var isSaving = false
+    @State private var isSendingNote = false
     @State private var successMessage: String?
     @State private var errorMessage: String?
     @State private var isContentVisible = false
@@ -113,6 +114,9 @@ struct QuickNotesMenuBarView: View {
                     .allowsHitTesting(false)
             }
         }
+        .offset(y: isSendingNote ? -4 : 0)
+        .opacity(isSendingNote ? 0.65 : 1)
+        .animation(.easeOut(duration: Self.noteSendAnimationDuration), value: isSendingNote)
     }
 
     private var editorBackground: some View {
@@ -176,6 +180,7 @@ struct QuickNotesMenuBarView: View {
 
     fileprivate static let editorHorizontalInset: CGFloat = 16
     fileprivate static let editorVerticalInset: CGFloat = 14
+    private static let noteSendAnimationDuration: TimeInterval = 0.14
 
     private var trimmedText: String {
         text.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -197,6 +202,7 @@ struct QuickNotesMenuBarView: View {
         successMessage = nil
         errorMessage = nil
         isEditorFocused = false
+        isSendingNote = false
         focusEditorAfterPopoverAppears()
     }
 
@@ -211,6 +217,11 @@ struct QuickNotesMenuBarView: View {
 
         do {
             _ = try await appState.notesService.save(noteText, appendToDailyNote: appState.appendToDailyNote)
+            withAnimation(.easeOut(duration: Self.noteSendAnimationDuration)) {
+                isSendingNote = true
+            }
+            try? await Task.sleep(for: .milliseconds(140))
+            isSendingNote = false
             text = ""
             withAnimation(.easeOut(duration: 0.16)) {
                 successMessage = "Saved ✓"
