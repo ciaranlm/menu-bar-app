@@ -6,7 +6,7 @@ struct QuickNotesApp: App {
     @StateObject private var appState = AppState()
 
     var body: some Scene {
-        MenuBarExtra("Quick Notes", systemImage: "note.text", isInserted: .constant(true)) {
+        MenuBarExtra("Wingit", systemImage: "bird.fill", isInserted: .constant(true)) {
             QuickNotesMenuBarView()
                 .environmentObject(appState)
         }

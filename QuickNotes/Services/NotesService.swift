@@ -20,9 +20,9 @@ enum NotesServiceError: LocalizedError, Equatable {
         case .emptyText:
             return "Enter a note before saving."
         case .automationPermissionDenied:
-            return "Quick Notes needs permission to control Apple Notes. Open System Settings → Privacy & Security → Automation and allow Notes access."
+            return "Wingit needs permission to control Apple Notes. Open System Settings → Privacy & Security → Automation and allow Notes access."
         case .notesUnavailable:
-            return "Apple Notes could not be opened. Make sure Notes is installed and try again. If this keeps happening, allow Quick Notes to control Notes in System Settings → Privacy & Security → Automation."
+            return "Apple Notes could not be opened. Make sure Notes is installed and try again. If this keeps happening, allow Wingit to control Notes in System Settings → Privacy & Security → Automation."
         case let .appleScriptFailed(message, _):
             return message.isEmpty ? "Apple Notes could not create the note." : message
         }
@@ -59,7 +59,7 @@ final class NotesService: NotesServicing {
             .first?
             .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
 
-        return firstLine.isEmpty ? "Quick Note" : String(firstLine.prefix(80))
+        return firstLine.isEmpty ? "Wingit Note" : String(firstLine.prefix(80))
     }
 
     private static func dailyNoteTitle(date: Date = Date()) -> String {
@@ -67,7 +67,7 @@ final class NotesService: NotesServicing {
         formatter.calendar = Calendar(identifier: .gregorian)
         formatter.locale = Locale(identifier: "en_US_POSIX")
         formatter.dateFormat = "yyyy-MM-dd"
-        return "Quick Notes - \(formatter.string(from: date))"
+        return "Wingit - \(formatter.string(from: date))"
     }
 
     private static func htmlBody(from text: String) -> String {
@@ -108,7 +108,7 @@ final class NotesService: NotesServicing {
         let bodyLiteral = appleScriptLiteral(htmlBody)
 
         return """
-        -- Find today's Quick Notes note by title. If it does not exist, create it.
+        -- Find today's Wingit note by title. If it does not exist, create it.
         -- If it exists, append a separator and the new escaped HTML body. Notes exposes
         -- existing note content as HTML through AppleScript, so appending HTML preserves
         -- the multiline formatting generated in Swift.
