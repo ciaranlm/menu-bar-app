@@ -8,7 +8,7 @@ Wingit is a native macOS 14+ menu bar app built with SwiftUI. It lets you write 
 2. Select the **Wingit** scheme.
 3. In **Signing & Capabilities**, choose your development team and update the bundle identifier if needed.
 4. Build and run with **Product → Run** (`⌘R`).
-5. Click the `bird.fill` SF Symbol in the macOS menu bar, type a note, and choose **Save to Notes**.
+5. Click the Wingit pigeon icon in the macOS menu bar, type a note, and choose **Save to Notes**.
 6. The first save will prompt for Automation permission to control Notes. Allow it.
 
 ## Architecture
