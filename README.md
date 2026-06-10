@@ -1,37 +1,30 @@
 # Wingit
 
-Wingit is a native macOS 14+ menu bar app built with SwiftUI. It lets you write a short note in a compact menu bar popover and save it directly into Apple Notes.
+Wingit is a lightweight macOS menu bar companion for capturing quick thoughts into Apple Notes without opening the Notes app first. It keeps a small writing surface one click—or one keyboard shortcut—away, then sends the note to Notes through the system's Apple Events automation.
 
-## Running in Xcode
+## What it does
 
-1. Open `QuickNotes.xcodeproj` in Xcode 15 or newer.
-2. Select the **Wingit** scheme.
-3. In **Signing & Capabilities**, choose your development team and update the bundle identifier if needed.
-4. Build and run with **Product → Run** (`⌘R`).
-5. Click the Wingit pigeon icon in the macOS menu bar, type a note, and choose **Save to Notes**.
-6. The first save will prompt for Automation permission to control Notes. Allow it.
+- **Fast menu bar capture**: Wingit lives in the macOS menu bar with a pigeon status icon, keeping note entry available without adding a Dock app or full window workflow.
+- **Apple Notes integration**: Notes are saved directly into Apple Notes, using the first line of your text as the note title when creating a standalone note.
+- **Daily-note mode**: An optional setting appends new entries to a daily note named `Wingit - yyyy-MM-dd`, creating that note automatically when needed.
+- **Keyboard-first workflow**: `Control-Shift-Space` opens a fresh capture popover, `Command-Return` saves, and `Escape` closes the popover without saving.
+- **Launch at login**: Wingit can be configured to start automatically when you sign in.
+- **Native macOS experience**: The app is built with SwiftUI and AppKit menu bar APIs, including a compact transient popover and a dedicated settings window.
 
-## Architecture
+## How it works
 
-- `QuickNotesApp` is the SwiftUI entry point and declares the `MenuBarExtra` scene.
-- `QuickNotesMenuBarView` renders the popover UI and owns transient editor state.
-- `NotesService` derives note titles, converts plain text to safe Notes HTML, and builds the AppleScript commands.
-- `AppleScriptRunner` executes AppleScript and maps common Apple Event failures to user-friendly errors.
-- `AppState` stores app-wide settings, including daily-note mode and launch-at-login state.
-- `LaunchAtLoginManager` wraps `SMAppService.mainApp`.
+Wingit converts the note text into safe HTML, preserves line breaks, and asks Apple Notes to create or update the target note. Because this uses Apple Events, macOS controls access through Automation privacy permissions. On first save, the system may ask whether Wingit can control Notes; granting access lets the app write captured notes into Apple Notes.
 
-## Permissions
+## Privacy
 
-Wingit controls Apple Notes through Apple Events. macOS will ask for Automation consent the first time the app tries to save a note. If access is denied, enable it in **System Settings → Privacy & Security → Automation**.
+Wingit is designed around local capture into Apple Notes. The app stores only small preference values locally, such as whether daily-note mode and launch-at-login are enabled. Note content is passed to Apple Notes on your Mac and is not sent to a separate Wingit service.
 
-The app includes the `NSAppleEventsUsageDescription` purpose string and the Apple Events sandbox entitlement required for a sandboxed app.
+## App structure
 
-## Packaging and distribution
-
-1. Set a unique bundle identifier and signing team in Xcode.
-2. Archive with **Product → Archive**.
-3. For direct distribution, export a Developer ID signed app and notarize it through Xcode Organizer.
-4. For the Mac App Store, keep App Sandbox enabled and verify Apple Events usage against App Store Review requirements.
-5. Ship the notarized `.app` in a signed `.dmg` or `.pkg` installer.
-
-
+- `QuickNotesApp` provides the SwiftUI app entry point and settings scene.
+- `AppDelegate` keeps the app menu-bar-only, creates the status item, and starts the global hotkey handler.
+- `StatusItemController` owns the menu bar icon, popover, and settings window.
+- `QuickNotesMenuBarView` renders the quick-capture editor, save controls, and status messages.
+- `SettingsView` exposes saving, startup, and shortcut details.
+- `NotesService` prepares note titles and HTML bodies, then builds the AppleScript used to create or append notes.
+- `AppleScriptRunner` executes the AppleScript and turns common automation failures into user-facing errors.
