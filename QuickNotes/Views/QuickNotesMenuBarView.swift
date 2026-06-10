@@ -3,9 +3,9 @@ import SwiftUI
 
 struct QuickNotesMenuBarView: View {
     @EnvironmentObject private var appState: AppState
-    @Environment(\.openSettings) private var openSettings
 
     let closePopover: () -> Void
+    let openSettings: () -> Void
 
     @State private var text = ""
     @State private var isEditorFocused = false
@@ -16,8 +16,12 @@ struct QuickNotesMenuBarView: View {
     @State private var handledQuickCaptureRequestID: UUID?
     @State private var clearSuccessTask: Task<Void, Never>?
 
-    init(closePopover: @escaping () -> Void = {}) {
+    init(
+        closePopover: @escaping () -> Void = {},
+        openSettings: @escaping () -> Void = {}
+    ) {
         self.closePopover = closePopover
+        self.openSettings = openSettings
     }
 
     var body: some View {
