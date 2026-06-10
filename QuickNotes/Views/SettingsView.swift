@@ -7,13 +7,13 @@ struct SettingsView: View {
         Form {
             Section("Saving") {
                 Toggle("Append new entries to a daily note", isOn: $appState.appendToDailyNote)
-                Text("Daily notes are named “Quick Notes - yyyy-MM-dd”.")
+                Text("Daily notes are named “Wingit - yyyy-MM-dd”.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
 
             Section("Startup") {
-                Toggle("Launch Quick Notes at login", isOn: Binding(
+                Toggle("Launch Wingit at login", isOn: Binding(
                     get: { appState.launchAtLoginEnabled },
                     set: { appState.setLaunchAtLogin($0) }
                 ))
@@ -27,7 +27,7 @@ struct SettingsView: View {
         .formStyle(.grouped)
         .padding(20)
         .frame(width: 420)
-        .navigationTitle("Quick Notes Settings")
+        .navigationTitle("Wingit Settings")
     }
 }
 

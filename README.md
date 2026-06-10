@@ -1,14 +1,14 @@
-# Quick Notes
+# Wingit
 
-Quick Notes is a native macOS 14+ menu bar app built with SwiftUI. It lets you write a short note in a compact menu bar popover and save it directly into Apple Notes.
+Wingit is a native macOS 14+ menu bar app built with SwiftUI. It lets you write a short note in a compact menu bar popover and save it directly into Apple Notes.
 
 ## Running in Xcode
 
 1. Open `QuickNotes.xcodeproj` in Xcode 15 or newer.
-2. Select the **Quick Notes** scheme.
+2. Select the **Wingit** scheme.
 3. In **Signing & Capabilities**, choose your development team and update the bundle identifier if needed.
 4. Build and run with **Product → Run** (`⌘R`).
-5. Click the `note.text` SF Symbol in the macOS menu bar, type a note, and choose **Save to Notes**.
+5. Click the `bird.fill` SF Symbol in the macOS menu bar, type a note, and choose **Save to Notes**.
 6. The first save will prompt for Automation permission to control Notes. Allow it.
 
 ## Architecture
@@ -22,7 +22,7 @@ Quick Notes is a native macOS 14+ menu bar app built with SwiftUI. It lets you w
 
 ## Permissions
 
-Quick Notes controls Apple Notes through Apple Events. macOS will ask for Automation consent the first time the app tries to save a note. If access is denied, enable it in **System Settings → Privacy & Security → Automation**.
+Wingit controls Apple Notes through Apple Events. macOS will ask for Automation consent the first time the app tries to save a note. If access is denied, enable it in **System Settings → Privacy & Security → Automation**.
 
 The app includes the `NSAppleEventsUsageDescription` purpose string and the Apple Events sandbox entitlement required for a sandboxed app.
 
