@@ -89,6 +89,8 @@ final class StatusItemController: NSObject, NSPopoverDelegate {
         let window = NSWindow(contentViewController: hostingController)
         window.title = "Wingit Settings"
         window.styleMask = [.titled, .closable, .miniaturizable]
+        window.setContentSize(NSSize(width: 460, height: 300))
+        window.minSize = NSSize(width: 460, height: 300)
         window.isReleasedWhenClosed = false
         window.center()
 
