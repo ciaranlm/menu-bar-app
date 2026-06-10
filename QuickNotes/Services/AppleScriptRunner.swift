@@ -20,9 +20,22 @@ struct AppleScriptRunner {
                 case -600, -609:
                     throw NotesServiceError.notesUnavailable
                 default:
+                    if Self.isNotesResolutionFailure(message) {
+                        throw NotesServiceError.notesUnavailable
+                    }
+
                     throw NotesServiceError.appleScriptFailed(message: message, code: code)
                 }
             }
         }
+    }
+
+    private static func isNotesResolutionFailure(_ message: String) -> Bool {
+        let normalizedMessage = message.lowercased()
+        return normalizedMessage.contains("com.apple.notes")
+            && (normalizedMessage.contains("can’t get application")
+                || normalizedMessage.contains("can't get application")
+                || normalizedMessage.contains("application isn’t running")
+                || normalizedMessage.contains("application isn't running"))
     }
 }
