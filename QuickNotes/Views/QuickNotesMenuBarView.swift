@@ -1,0 +1,144 @@
+import AppKit
+import SwiftUI
+
+struct QuickNotesMenuBarView: View {
+    @EnvironmentObject private var appState: AppState
+    @Environment(\.openSettings) private var openSettings
+    @FocusState private var isEditorFocused: Bool
+
+    @State private var text = ""
+    @State private var isSaving = false
+    @State private var successMessage: String?
+    @State private var errorMessage: String?
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            header
+            editor
+            controls
+            statusMessage
+        }
+        .padding(16)
+        .frame(width: 360)
+        .task {
+            focusEditorAfterPopoverAppears()
+        }
+    }
+
+    private var header: some View {
+        HStack(spacing: 8) {
+            Image(systemName: "note.text")
+                .font(.title3)
+                .foregroundStyle(.accent)
+
+            Text("Quick Notes")
+                .font(.headline)
+
+            Spacer()
+
+            Button {
+                openSettings()
+            } label: {
+                Image(systemName: "gearshape")
+                    .imageScale(.medium)
+            }
+            .buttonStyle(.borderless)
+            .help("Open Settings")
+
+            Button("Quit") {
+                NSApplication.shared.terminate(nil)
+            }
+            .buttonStyle(.borderless)
+        }
+    }
+
+    private var editor: some View {
+        TextEditor(text: $text)
+            .font(.body)
+            .scrollContentBackground(.hidden)
+            .padding(8)
+            .background(.quaternary, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+            .frame(height: 180)
+            .focused($isEditorFocused)
+            .overlay(alignment: .topLeading) {
+                if text.isEmpty {
+                    Text("Type a note…")
+                        .foregroundStyle(.secondary)
+                        .padding(.horizontal, 13)
+                        .padding(.vertical, 16)
+                        .allowsHitTesting(false)
+                }
+            }
+    }
+
+    private var controls: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Toggle("Append to today’s daily note", isOn: $appState.appendToDailyNote)
+                .toggleStyle(.checkbox)
+
+            HStack {
+                Spacer()
+
+                Button {
+                    Task { await saveNote() }
+                } label: {
+                    if isSaving {
+                        ProgressView()
+                            .controlSize(.small)
+                    } else {
+                        Text("Save to Notes")
+                    }
+                }
+                .keyboardShortcut(.return, modifiers: [.command])
+                .disabled(isSaving || text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                .buttonStyle(.borderedProminent)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var statusMessage: some View {
+        if let successMessage {
+            Label(successMessage, systemImage: "checkmark.circle.fill")
+                .font(.callout)
+                .foregroundStyle(.green)
+        } else if let errorMessage {
+            Label(errorMessage, systemImage: "exclamationmark.triangle.fill")
+                .font(.callout)
+                .foregroundStyle(.orange)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+    }
+
+    private func saveNote() async {
+        let noteText = text
+        isSaving = true
+        successMessage = nil
+        errorMessage = nil
+
+        do {
+            let result = try await appState.notesService.save(noteText, appendToDailyNote: appState.appendToDailyNote)
+            text = ""
+            successMessage = result.appendedToDailyNote
+                ? "Added to \(result.title)."
+                : "Saved \(result.title)."
+            focusEditorAfterPopoverAppears()
+        } catch {
+            errorMessage = (error as? LocalizedError)?.errorDescription ?? error.localizedDescription
+        }
+
+        isSaving = false
+    }
+
+    private func focusEditorAfterPopoverAppears() {
+        Task { @MainActor in
+            try? await Task.sleep(for: .milliseconds(150))
+            isEditorFocused = true
+        }
+    }
+}
+
+#Preview {
+    QuickNotesMenuBarView()
+        .environmentObject(AppState())
+}
