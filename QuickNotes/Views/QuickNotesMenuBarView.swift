@@ -53,8 +53,10 @@ struct QuickNotesMenuBarView: View {
 
     private var header: some View {
         HStack(spacing: 10) {
-            Image(systemName: "bird.fill")
-                .font(.system(size: 22, weight: .semibold))
+            Image("PigeonStatusIcon")
+                .renderingMode(.template)
+                .resizable()
+                .scaledToFit()
                 .foregroundStyle(Color.accentColor)
                 .frame(width: 28, height: 28)
 

@@ -42,7 +42,10 @@ final class StatusItemController: NSObject, NSPopoverDelegate {
 
     private func configureStatusItem() {
         guard let button = statusItem.button else { return }
-        button.image = NSImage(systemSymbolName: "bird.fill", accessibilityDescription: "Wingit")
+        let image = NSImage(named: "PigeonStatusIcon")
+        image?.isTemplate = true
+        image?.accessibilityDescription = "Wingit"
+        button.image = image
         button.action = #selector(statusItemClicked)
         button.target = self
         button.toolTip = "Wingit Quick Notes"
